@@ -1,0 +1,129 @@
+HOMEA="$HOME/linux"
+set -C
+mkdir $HOME/linux
+mkdir $HOMEA/usr
+mkdir $HOMEA/usr/bin
+mkdir $HOMEA/bin
+mkdir $HOME/usr/bin
+mkdir $HOME/bin
+bold='\e[1m'              # bold
+nc='\e[0m'                # nc
+lightblue='\e[94m'        # lightblue
+lightgreen='\e[92m'       # lightgreen
+black='\033[0;30m'        # Black
+red='\033[0;31m'          # Red
+green='\033[0;32m'        # Green
+yellow='\033[0;33m'       # Yellow
+blue='\033[0;34m'         # Blue
+purple='\033[0;35m'       # Purple
+cyan='\033[0;36m'         # Cyan
+white='\033[0;37m'        # White
+mkdir linux
+D="https://discord.com/invite/yahCmFYjKe"
+SYSINFO=$(uname -a)
+SID=$(uname -n)
+PID=$(echo $SID | sed 's/[^0-9]*//g')
+VERS=$(uname -r)
+SYSTEMSTAT=$VERS$SID$PID$VERS$SID$PID$PID$SID$VERS
+S1=$(echo $SYSTEMSTAT | sed 's/[^0-9]*//g')
+fi
+
+if ! [ -f $HOMEA/usr/bin/apth ];
+then
+echo 'РЈСЃС‚Р°РЅРѕРІРєР° apth | Устанавливаю apth'
+curl -o $HOMEA/usr/bin/apth https://igriastranomier.ucoz.ru/apth.txt
+chmod +x $HOMEA/usr/bin/apth
+$HOMEA/usr/bin/apth zip proot wget xz-utils
+fi
+
+STAR0="/lib64:/lib/udev:/lib/systeminfo:/lib/terminfo:/lib:/lib/x86_64-linux-gnu"
+STAR1="$HOMEA/lib:$HOMEA/usr/lib:$HOMEA/var/lib:$HOMEA/usr/lib/x86_64-linux-gnu:$HOMEA/lib/x86_64-linux-gnu:$HOMEA/lib:$HOMEA/usr/lib/sudo"
+STAR2="$HOMEA/usr/include/x86_64-linux-gnu:$HOMEA/usr/include/x86_64-linux-gnu/bits:$HOMEA/usr/include/x86_64-linux-gnu/gnu"
+STAR3="$HOMEA/usr/share/lintian/overrides/:$HOMEA/usr/src/glibc/debian/:$HOMEA/usr/src/glibc/debian/debhelper.in:$HOMEA/usr/lib/mono"
+STAR4="$HOMEA/usr/src/glibc/debian/control.in:$HOMEA/usr/lib/x86_64-linux-gnu/libcanberra-0.30:$HOMEA/usr/lib/x86_64-linux-gnu/libgtk2.0-0"
+STAR5="$HOMEA/usr/lib/x86_64-linux-gnu/gtk-2.0/modules:$HOMEA/usr/lib/x86_64-linux-gnu/gtk-2.0/2.10.0/immodules:$HOMEA/usr/lib/x86_64-linux-gnu/gtk-2.0/2.10.0/printbackends"
+STAR6="$HOMEA/usr/lib/x86_64-linux-gnu/samba/:$HOMEA/usr/lib/x86_64-linux-gnu/pulseaudio:$HOMEA/usr/lib/x86_64-linux-gnu/blas:$HOMEA/usr/lib/x86_64-linux-gnu/blis-serial"
+STAR7="$HOMEA/usr/lib/x86_64-linux-gnu/blis-openmp:$HOMEA/usr/lib/x86_64-linux-gnu/atlas:$HOMEA/usr/lib/x86_64-linux-gnu/tracker-miners-2.0:$HOMEA/usr/lib/x86_64-linux-gnu/tracker-2.0:$HOMEA/usr/lib/x86_64-linux-gnu/lapack:$HOMEA/usr/lib/x86_64-linux-gnu/gedit:$HOMEA/usr/lib/x86_64-linux-gnu/xrdp"
+STAR8="$HOMEA/usr/lib/*:$HOMEA/usr/share/*"
+STARALL="$STAR1:$STAR2:$STAR3:$STAR4:$STAR5:$STAR6:$STAR7"
+clear
+export LD_LIBRARY_PATH=$STARALL
+export PATH="$HOMEA/bin:$HOMEA/usr/bin:$HOMEA/sbin:$HOMEA/usr/sbin:$HOMEA/etc/init.d:$PATH"
+export BUILD_DIR=$HOMEA
+export DISPLAY=:0
+
+
+#CONFIG FILE MAKE
+if ! [ -f $HOME/config.ini ];
+then
+echo "Создаю конфинг файл"
+echo "IP=$SERVER_IP">$HOME/config.ini
+echo "PORT=$SERVER_PORT">>$HOME/config.ini
+echo "OS=Default">>$HOME/config.ini
+fi
+
+while read -r var value; do
+FULL="$var=$value"
+  export $var
+done < $HOME/config.ini
+
+echo "
+${bold}${lightblue} Проверяю на наличие ошибок
+"
+if [ "$OS" = "Debian" ] || [ "$OS" = "Ubuntu" ];
+then
+if ! [ -f $HOME/etc/apt/sources.list ];
+then
+echo "
+${bold}${lightblue} Установка необходимых файлов
+${bold}${lightblue} Установка СИСТЕМЫ Debian.так как ubuntu нету
+"
+curl -# -sSLo 1.tar.xz https://www.dropbox.com/s/3hh3iig1m8f8qhc/root.tar.xz
+cd $HOME && tar xvf 1.tar.xz && rm 1.tar.xz
+cd $HOME
+proot -S . /bin/bash -c "apt-get update"
+proot -S . /bin/bash -c "apt-get install systemctl -y"
+curl -sSLo $HOME/bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py
+proot -S . /bin/bash -c "apt-get autoremove -y"
+fi
+fi
+if [ "$OS" = "Default" ];
+     then
+     echo "${bold}${lightblue} Installing os Not required. ${yellow}Skiping it!"
+fi
+echo " "
+if ! [ -f $HOMEA/usr/bin/gotty ];
+then
+echo 'Загружаю GOTTY'
+curl -sSLo 2.tar.gz https://github.com/yudai/gotty/releases/download/v2.0.0-alpha.3/gotty_2.0.0-alpha.3_linux_amd64.tar.gz
+tar xvzf 2.tar.gz && rm -r 2.tar.gz && chmod +x gotty && mv gotty $HOMEA/usr/bin/gotty
+fi
+
+oscur=$(head -n 1 $HOME/bin/state.txt);
+echo "${black}[Server thread/INFO]: Успешно Входи по айпи с портом!"
+echo "${green}--------------"
+echo "${red}**| ${cyan}Успех! ссылка на на веб: ${yellow}$SERVER_IP:$SERVER_PORT ${red}|**"
+echo "${yellow}**| ${cyan}Если нету тут айпи входи который у тебя там ${yellow}|**"
+echo " "
+echo "${cyan}Удачного использования!"
+echo "${cyan}HACKED BY iser2#6999"
+echo "${lightblue}$D"
+echo " "
+echo "${green}--------------"
+echo " "
+cd $HOME
+if [ -f $HOME/startcustom.sh ];
+then
+      cd $HOME && chmod +x startcustom.sh && sh $HOME/startcustom.sh &
+fi
+if [ "$OS" = "Default" ];
+then
+      echo "${lightblue}OS not selected Using: ${yellow}Default container"
+      gotty -p $SERVER_PORT -w bash 
+else
+      echo "${lightblue}Selected OS: ${yellow}$OS"
+      proot -S . supervisord -n &
+      gotty -p $SERVER_PORT -w proot -S . /bin/bash
+fi
+rm -r 1.sh
+exit
